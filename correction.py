@@ -6,9 +6,7 @@ from spellchecker import SpellChecker
 import json
 import sys
 
-#arrays to hold our correct and incorrect words
-incorrect_words = []
-correct_words = []
+
 
 #Create dictionary out of the given textfile
 def create_dictionary(my_path):
@@ -25,17 +23,33 @@ def create_dictionary(my_path):
     with open(json_name,"w") as out_json:
         json.dump(lexique, out_json,ensure_ascii=False, indent=4)
 
+    return lexique
 
+def corrige_Lev(word, spell):
+    sttm = ["null","null","null","null","null"]
+    candidates = list(spell.candidates(word))
+    count = 0
+    for (i,can) in enumerate(candidates):
+        if count < 5:
+            sttm[i] = candidates[i]
+            count += 1
+        else:
+            break
+    return sttm
 
 
 def main():
 
     path = "./" +str(sys.argv[1])#"./1voc-1bwc.txt"
     path2 = "./" +str(sys.argv[2]) #"./devoir3-train.txt"
-
+    #arrays to hold our correct and incorrect words
+    incorrect_words = []
+    correct_words = []
+    ever_predicted = 0
+    first_predicted = 0 
     d = 2
 
-    create_dictionary(path)
+    lexique = create_dictionary(path)
     #Create instance of spellchecker
     spell = SpellChecker(language=None, distance=d)
     #Load out custom made disctionary
@@ -51,21 +65,25 @@ def main():
             correct_words.append(correct)
 
     output_lines = ""
-    for (i, word) in enumerate(incorrect_words):
-        candidates = spell.candidates(word)
+    for  (i,word) in enumerate(incorrect_words):
+        candidates_lev = corrige_Lev(word, spell)
         to_print = str(word) + "\t"
-        local_count = 0
-        for cor in candidates:
-            if local_count <5:
-                to_print += cor + "\t"
-                local_count+= 1
-            else:
-                break
-        # print(to_print)
-        output_lines += to_print + "\n"
+        if correct_words[i] in candidates_lev:
+            if correct_words[i] == candidates_lev[0]:
+                first_predicted += 1
+            ever_predicted += 1
 
+        for cand in candidates_lev:
+            if cand == "null":
+                break
+            else:
+                to_print += cand + "\t"
+                
+        output_lines += to_print + "\n" 
+    performance = str("Right Corrections found = " + str(ever_predicted) +" = %"+ str( round( ever_predicted/len(correct_words)*100 , 2 ) )+"\n" + "Right Correction in first candidate = "+ str(first_predicted)+" = %"+ str(round(first_predicted/len(correct_words)*100,2)))
+    output_lines += performance
+    
     print(output_lines)
-    return output_lines
 
 if __name__ == "__main__":
     main()
