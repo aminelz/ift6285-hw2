@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from input_output import get_args, get_misspelling, output
 import numpy as np
 from spellchecker import SpellChecker  
 import json
@@ -37,35 +38,38 @@ def corrige_Lev(word, spell):
             break
     return sttm
 
-
 def main():
 
-    path = "./" +str(sys.argv[1])#"./1voc-1bwc.txt"
-    path2 = "./" +str(sys.argv[2]) #"./devoir3-train.txt"
-    #arrays to hold our correct and incorrect words
+    args = get_args()
+
+    # path to the text file of the vocabulary
+    vocabulary_path = args['vocabulary']
+
+    # path to the text file of misspellings
+    misspelling_path = args['input_file']
+
+    # arrays to hold our correct and incorrect words
     incorrect_words = []
     correct_words = []
     ever_predicted = 0
-    first_predicted = 0 
-    d = 2
+    first_predicted = 0
+    edit_distance = 2
 
-    lexique = create_dictionary(path)
-    #Create instance of spellchecker
-    spell = SpellChecker(language=None, distance=d)
-    #Load out custom made disctionary
+    lexique = create_dictionary(vocabulary_path)
+    # Create instance of spellchecker
+    spell = SpellChecker(language=None, distance=edit_distance)
+    # Load out custom made disctionary
     spell.word_frequency.load_dictionary("./lexique.json")
 
-
-    #Create our to be corrected list of words
-    with open(path2) as txt2:
-        for line in txt2:
-            false = line.strip().split("\t", 1)[0]
-            correct = line.strip().split("\t", 1)[1].replace(u'\xa0', ' ')
-            incorrect_words.append(false)
-            correct_words.append(correct)
+    # Create our to be corrected list of words
+    for line in get_misspelling():
+        false = line.strip().split("\t", 1)[0]
+        correct = line.strip().split("\t", 1)[1].replace(u'\xa0', ' ')
+        incorrect_words.append(false)
+        correct_words.append(correct)
 
     output_lines = ""
-    for  (i,word) in enumerate(incorrect_words):
+    for (i, word) in enumerate(incorrect_words):
         candidates_lev = corrige_Lev(word, spell)
         to_print = str(word) + "\t"
         if correct_words[i] in candidates_lev:
@@ -78,12 +82,13 @@ def main():
                 break
             else:
                 to_print += cand + "\t"
-                
-        output_lines += to_print + "\n" 
-    performance = str("Right Corrections found = " + str(ever_predicted) +" = %"+ str( round( ever_predicted/len(correct_words)*100 , 2 ) )+"\n" + "Right Correction in first candidate = "+ str(first_predicted)+" = %"+ str(round(first_predicted/len(correct_words)*100,2)))
+
+        output_lines += to_print + "\n"
+    performance = str("Right Corrections found = " + str(ever_predicted) + " = %" + str(round(ever_predicted/len(correct_words)*100, 2)) +
+                      "\n" + "Right Correction in first candidate = " + str(first_predicted)+" = %" + str(round(first_predicted/len(correct_words)*100, 2)))
     output_lines += performance
-    
-    print(output_lines)
+
+    output(output_lines)
 
 if __name__ == "__main__":
     main()

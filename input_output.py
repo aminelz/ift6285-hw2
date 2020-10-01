@@ -2,11 +2,11 @@
 Handles the io of the correction program
 """
 import argparse
+from argparse import Namespace
 from sys import stdin
 from typing import Dict, Iterator, Optional
 
-
-output_path: Optional[str] = None
+parsed_args: Optional[Namespace] = None
 
 def get_args() -> Dict[str, str]:
     """Gathers command line arguments and prepares output file if needed
@@ -31,27 +31,24 @@ def get_args() -> Dict[str, str]:
     # output file is emptied
     if args.output_file is not None:
         open(args.output_file, 'w').close()
-    global output_path
-    output_path = args.output_file
+    global parsed_args
+    parsed_args = args
 
     return {"vocabulary": args.vocabulary, "input_file": args.input_file}
 
-def get_misspelling(input_file: str = None) -> Iterator[str] :
+def get_misspelling() -> Iterator[str] :
     """Get a misspelled word from stdin or the given file.
     One misspelling per line.
-
-    Args:
-        input_file (str): A text file containing one misspelling per line
 
     Yields:
         Iterator[str]: A generator over strings
     """
-    if input_file is None:
+    if parsed_args.input_file is None:
         for line in stdin:
             yield line.strip()
 
     else:
-        with open(input_file, 'r') as misspellings:
+        with open(parsed_args.input_file, 'r') as misspellings:
             for line in misspellings:
                 yield line
 
@@ -61,8 +58,8 @@ def output(message: str):
     Args:
         message (str): String to output
     """
-    if output_path is None:
+    if parsed_args.output_path is None:
         print(message)
     else:
-        with open(output_path, 'a+') as out:
+        with open(parsed_args.output_path, 'a+') as out:
             out.write(message + "\n")
