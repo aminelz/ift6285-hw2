@@ -6,15 +6,8 @@ from spellchecker import SpellChecker
 import json
 import sys
 
-
-path = "./" +str(sys.argv[1])#"./1voc-1bwc.txt"
-path2 = "./" +str(sys.argv[2]) #"./devoir3-train.txt"
-# print(path, path2)
-
-d = 2
-
-#arrays to hold our correct and uncorrect words
-uncorrect_words = []
+#arrays to hold our correct and incorrect words
+incorrect_words = []
 correct_words = []
 
 #Create dictionary out of the given textfile
@@ -37,6 +30,11 @@ def create_dictionary(my_path):
 
 def main():
 
+    path = "./" +str(sys.argv[1])#"./1voc-1bwc.txt"
+    path2 = "./" +str(sys.argv[2]) #"./devoir3-train.txt"
+
+    d = 2
+
     create_dictionary(path)
     #Create instance of spellchecker
     spell = SpellChecker(language=None, distance=d)
@@ -49,17 +47,11 @@ def main():
         for line in txt2:
             false = line.strip().split("\t", 1)[0]
             correct = line.strip().split("\t", 1)[1].replace(u'\xa0', ' ')
-            uncorrect_words.append(false)
+            incorrect_words.append(false)
             correct_words.append(correct)
 
-    # print(uncorrect_words[1], "\t")
-
-    # for j in spell.candidates(uncorrect_words[1]):
-    #     print(j)
-
-    # with open("output.txt", 'a') as output:
     output_lines = ""
-    for (i, word) in enumerate(uncorrect_words):
+    for (i, word) in enumerate(incorrect_words):
         candidates = spell.candidates(word)
         to_print = str(word) + "\t"
         local_count = 0
@@ -75,8 +67,8 @@ def main():
     print(output_lines)
     return output_lines
 
-main()
-
+if __name__ == "__main__":
+    main()
 
 
 
