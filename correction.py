@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from typing import Dict, Iterator
 from input_output import get_args, get_misspelling, output
-import numpy as np
 from spellchecker import SpellChecker  
 import json
-import sys
 
 
 
 #Create dictionary out of the given textfile
-def create_dictionary(my_path):
+def create_dictionary(my_path: str) -> Dict[str, int]:
+    """Creates a json dictionary for Levenshtein distance computations
+
+    Args:
+        my_path (str): path to the txt vocabulary
+    """
     
     lexique = {}
     json_name = "lexique.json"
-    with open(my_path, "r") as txt:
+    with open(my_path, "r", encoding='utf-8') as txt:
         for line in txt:
             count = line.strip().split(' ', 1)[0]
             word = line.strip().split(' ', 1)[1].replace(u'\xa0', ' ')
@@ -22,73 +26,41 @@ def create_dictionary(my_path):
             lexique[word] = int(count)
     #ouput the dictionary to a json file
     with open(json_name,"w") as out_json:
-        json.dump(lexique, out_json,ensure_ascii=False, indent=4)
+        json.dump(lexique, out_json, indent=4)
 
     return lexique
 
-def corrige_Lev(word, spell):
-    sttm = ["null","null","null","null","null"]
-    candidates = list(spell.candidates(word))
-    count = 0
-    for (i,can) in enumerate(candidates):
-        if count < 5:
-            sttm[i] = candidates[i]
-            count += 1
-        else:
-            break
-    return sttm
+def levenshtein_distance(words: Iterator[str]):
+    """Corrects the words based on Levenshtein distances
+
+    Args:
+        words (Iterator[str]): Iterator over the misspelled words
+    """
+
+    # Create instance of spellchecker
+    spell = SpellChecker()
+    
+    # Load out custom made dictionary
+    spell.word_frequency.load_dictionary("./lexique.json")
+
+    for word in words:
+        suggestions = sorted(spell.candidates(word), key=spell.word_probability)
+
+        output("{misspelled}\t{corrections}".format(\
+            misspelled=word, \
+                corrections= "\t".join(suggestions[:5])
+            )) # may cause IO bottleneck
 
 def main():
 
     args = get_args()
 
-    # path to the text file of the vocabulary
+    # path to the text file of the vocabulary and create a dictionary
     vocabulary_path = args['vocabulary']
+    vocabulary = create_dictionary(vocabulary_path)
 
-    # path to the text file of misspellings
-    misspelling_path = args['input_file']
-
-    # arrays to hold our correct and incorrect words
-    incorrect_words = []
-    correct_words = []
-    ever_predicted = 0
-    first_predicted = 0
-    edit_distance = 2
-
-    lexique = create_dictionary(vocabulary_path)
-    # Create instance of spellchecker
-    spell = SpellChecker(language=None, distance=edit_distance)
-    # Load out custom made disctionary
-    spell.word_frequency.load_dictionary("./lexique.json")
-
-    # Create our to be corrected list of words
-    for line in get_misspelling():
-        false = line.strip().split("\t", 1)[0]
-        correct = line.strip().split("\t", 1)[1].replace(u'\xa0', ' ')
-        incorrect_words.append(false)
-        correct_words.append(correct)
-
-    output_lines = ""
-    for (i, word) in enumerate(incorrect_words):
-        candidates_lev = corrige_Lev(word, spell)
-        to_print = str(word) + "\t"
-        if correct_words[i] in candidates_lev:
-            if correct_words[i] == candidates_lev[0]:
-                first_predicted += 1
-            ever_predicted += 1
-
-        for cand in candidates_lev:
-            if cand == "null":
-                break
-            else:
-                to_print += cand + "\t"
-
-        output_lines += to_print + "\n"
-    performance = str("Right Corrections found = " + str(ever_predicted) + " = %" + str(round(ever_predicted/len(correct_words)*100, 2)) +
-                      "\n" + "Right Correction in first candidate = " + str(first_predicted)+" = %" + str(round(first_predicted/len(correct_words)*100, 2)))
-    output_lines += performance
-
-    output(output_lines)
+    # Levenshtein distance
+    levenshtein_distance(get_misspelling())
 
 if __name__ == "__main__":
     main()

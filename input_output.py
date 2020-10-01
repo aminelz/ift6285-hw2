@@ -50,7 +50,7 @@ def get_misspelling() -> Iterator[str] :
     else:
         with open(parsed_args.input_file, 'r') as misspellings:
             for line in misspellings:
-                yield line
+                yield line.strip()
 
 def output(message: str):
     """Prints to the stdout or appends to the end of the given file.
@@ -58,8 +58,8 @@ def output(message: str):
     Args:
         message (str): String to output
     """
-    if parsed_args.output_path is None:
+    if parsed_args.output_file is None:
         print(message)
     else:
-        with open(parsed_args.output_path, 'a+') as out:
+        with open(parsed_args.output_file, 'a+') as out:
             out.write(message + "\n")
