@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import Dict, Iterator
-from input_output import get_args, get_misspelling, output
-from spellchecker import SpellChecker  
+from input_output import get_args, get_misspelling, output  
 import json
 
 
@@ -36,7 +35,8 @@ def levenshtein_distance(words: Iterator[str]):
     Args:
         words (Iterator[str]): Iterator over the misspelled words
     """
-
+    from spellchecker import SpellChecker
+    
     # Create instance of spellchecker
     spell = SpellChecker()
     

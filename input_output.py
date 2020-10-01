@@ -15,7 +15,7 @@ def get_args() -> Dict[str, str]:
         Dict[str, str]: Argument values, keys: [vocabulary, input_file, output_file]
     """
     parser = argparse.ArgumentParser(\
-        description="Corrects a list of misspelled words")
+        description="Corrects a list of misspelled words, using Levenshtein by default")
 
     parser.add_argument('vocabulary', type=str, \
         help="Vocubulary related to the list of misspellings")
