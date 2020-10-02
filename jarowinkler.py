@@ -1,5 +1,4 @@
 from typing import Iterator
-from spellchecker import SpellChecker
 from input_output import output
 from Levenshtein import jaro_winkler
 import numpy as np

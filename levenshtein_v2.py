@@ -1,5 +1,4 @@
 from typing import Dict, Iterator
-from spellchecker import SpellChecker
 from input_output import output
 from Levenshtein import distance
 import numpy as np
