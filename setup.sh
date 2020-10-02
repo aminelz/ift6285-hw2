@@ -15,3 +15,6 @@ if [ ! -f "data/devoir3-train.txt" ]; then
     curl "http://www-labs.iro.umontreal.ca/~felipe/IFT6285-Automne2020/devoir3-train.txt" \
         -o $train
 fi
+
+# python modules
+pip install pyspellchecker
