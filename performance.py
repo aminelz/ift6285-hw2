@@ -21,6 +21,7 @@ from argparse import Namespace
 from typing import Iterator, List
 import sys
 
+
 def parse() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Evaluates the list of spelling corrections by comparing with a testing set")
@@ -99,12 +100,11 @@ def main():
     First suggestion: {first}/{total}
     Following suggestion: {following}/{total}
     Wrong answers: {wrong}/{total}
-    """.format(tally=total_score,\
-        total=total_evaluated,\
-            first=scores['first'],\
-                following=scores['following'],\
-                    wrong=scores['wrong']))
-
+    """.format(tally=total_score,
+               total=total_evaluated,
+               first=scores['first'],
+               following=scores['following'],
+               wrong=scores['wrong']))
 
 
 if __name__ == "__main__":
