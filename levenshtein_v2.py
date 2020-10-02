@@ -29,7 +29,7 @@ def levenshtein_distance2(words: Iterator[str], vocabulary: Dict[str, int]):
                         idx[j] = temp   
 
         for i in idx:
-            suggestions.append(vocabulary[i])
+            suggestions.append(vocab_list[i])
 
             output("{misspelled}\t{corrections}".format(
                 misspelled=word,

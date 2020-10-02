@@ -29,7 +29,7 @@ def jarowinkler_distance(words: Iterator[str], vocabulary: str):
                         idx[j] = temp   
 
         for i in idx:
-            suggestions.append(vocabulary[i])
+            suggestions.append(vocab_list[i])
 
             output("{misspelled}\t{corrections}".format(
                 misspelled=word,
