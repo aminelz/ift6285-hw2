@@ -76,7 +76,7 @@ def get_args() -> Dict[str, str]:
 
     distance_choices.add_argument('--levenshtein2', dest='distance', action='store_const',
                                   const='levenshtein2',
-                                  help="Uses the Levenshtein distance implementation from Levenshtein")
+                                  help="Uses the Levenshtein distance implementation from python-Levenshtein")
 
     distance_choices.add_argument('--hamming', dest='distance', action='store_const',
                                   const='hamming',
