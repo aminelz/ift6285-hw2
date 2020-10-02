@@ -21,18 +21,18 @@ def jarowinkler_distance(words: Iterator[str], vocabulary: str):
             distances.append(jaro_winkler(word, vocab))
         idx = np.array(distances).argsort()[::-1][:5]
         
-    for i in range(5):
-        for j in range(i+1,5):
-            if distances[idx[i]] == distances[idx[j]]:
-                if vocabulary.get(vocab_list[idx[i]]) < vocabulary.get(vocab_list[idx[j]]):
-                    temp = idx[i] 
-                    idx[i] = idx[j]
-                    idx[j] = temp   
+        for i in range(5):
+            for j in range(i+1,5):
+                if distances[idx[i]] == distances[idx[j]]:
+                    if vocabulary.get(vocab_list[idx[i]]) < vocabulary.get(vocab_list[idx[j]]):
+                        temp = idx[i] 
+                        idx[i] = idx[j]
+                        idx[j] = temp   
 
-    for i in idx:
-        suggestions.append()
+        for i in idx:
+            suggestions.append()
 
-        output("{misspelled}\t{corrections}".format(
-            misspelled=word,
-            corrections="\t".join(suggestions)
-        ))  # may cause IO bottleneck
+            output("{misspelled}\t{corrections}".format(
+                misspelled=word,
+                corrections="\t".join(suggestions)
+            ))  # may cause IO bottleneck
