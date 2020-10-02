@@ -19,13 +19,32 @@ def get_args() -> Dict[str, str]:
         description="Corrects a list of misspelled words, using Levenshtein by default")
 
     parser.add_argument('vocabulary', type=str,
-                        help="Vocubulary related to the list of misspellings")
+                        help="Vocabulary related to the list of misspellings")
 
     parser.add_argument('--input', dest='input_file',
                         help="Input file of misspellings. By default, the program reads from stdin.")
 
     parser.add_argument('--output', dest='output_file',
                         help="Output file of the suggested corrections. By default, it is stdin.")
+
+    # choose one distance model
+    distance_choices = parser.add_mutually_exclusive_group()
+
+    distance_choices.add_argument('--levenshtein', dest='distance', action='store_const',\
+        const='levenshtein',\
+            help="Uses the Levenshtein distance implementation from pyspellchecker")
+
+    distance_choices.add_argument('--levenshtein2', dest='distance', action='store_const',\
+        const='levenshtein2',\
+            help="Uses the Levenshtein distance implementation from Levenshtein")
+
+    distance_choices.add_argument('--hamming', dest='distance', action='store_const',\
+        const='hamming',\
+            help="Uses the Hamming distance")
+
+    distance_choices.add_argument('--jarowinkler', dest='distance', action='store_const',\
+        const='jarowinkler',\
+            help="Uses the Jaro-Winkler distance")
 
     args = parser.parse_args()
 

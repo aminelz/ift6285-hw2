@@ -1,6 +1,8 @@
 # data
 data/
 *.txt
+*.csv
+*.png
 
 # ide caches
 .mypy_cache/
