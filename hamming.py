@@ -17,9 +17,9 @@ def hamming_distance(words: Iterator[str], vocabulary: str):
         distances = []
         suggestions = []
         vocab_list = list(vocabulary)
-        for (i,vocab) in vocab_list:
+        for (i,vocab) in enumerate(vocab_list):
             distances.append(hamming(word, vocab))
-        idx = np.array(distances).argsort()[::-1][:5]
+        idx = np.array(distances).argsort()[:5]
         
     for i in range(5):
         for j in range(i+1,5):
