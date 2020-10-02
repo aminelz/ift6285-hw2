@@ -18,3 +18,4 @@ fi
 
 # python modules
 pip install pyspellchecker
+pip install python-Levenshtein

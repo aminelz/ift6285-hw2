@@ -1,15 +1,15 @@
-from typing import Iterator
+from typing import Dict, Iterator
 from spellchecker import SpellChecker
 from input_output import output
 from Levenshtein import distance
 import numpy as np
 
-def levenshtein_distance2(words: Iterator[str], vocabulary: str):
+def levenshtein_distance2(words: Iterator[str], vocabulary: Dict[str, int]):
     """Corrects the words based on JaroWinkler distances
 
     Args:
         words (Iterator[str]): Iterator over the misspelled words
-        vocabulary (str) : dictionary holding words and their frequency
+        vocabulary (Dict[str, int]) : dictionary holding words and their frequency
     """
     suggestions = []
 
