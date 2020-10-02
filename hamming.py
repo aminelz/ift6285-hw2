@@ -33,7 +33,7 @@ def hamming_distance(words: Iterator[str], vocabulary: Dict[str, int]):
                         idx[j] = temp   
 
         for i in idx:
-            suggestions.append(vocabulary_list[i])
+            suggestions.append(vocab_list[i])
 
             output("{misspelled}\t{corrections}".format(
                 misspelled=word,
