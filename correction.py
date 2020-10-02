@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from levenshtein import levenshtein_distance
 from typing import Dict
 from input_output import get_args, get_misspelling, output
 import json
@@ -39,9 +38,30 @@ def main():
     vocabulary_path = args['vocabulary']
     vocabulary = create_dictionary(vocabulary_path)
 
-    # Levenshtein distance
-    levenshtein_distance(get_misspelling(), 'lexique.json')
+    # decide which distance to use
+    if args['distance'] == 'levenshtein':
+        # Levenshtein distance
+        from levenshtein import levenshtein_distance
+        levenshtein_distance(get_misspelling(), 'lexique.json')
+    
+    elif args['distance'] == 'levenshtein2':
+        # Levenshtein distance using another library
+        from levenshtein_v2 import levenshtein_distance2
+        levenshtein_distance2(get_misspelling(), vocabulary)
+    
+    elif args['distance'] == 'hamming':
+        # Hamming distance
+        from hamming import hamming_distance
+        hamming_distance(get_misspelling(), vocabulary)
 
+    elif args['distance'] == 'jarowinkler':
+        # Jaro-Winkler
+        from jarowinkler import jarowinkler_distance
+        jarowinkler_distance(get_misspelling(), vocabulary)
+    
+    else:
+        raise Exception("Unknown distance function : {}".format(args['distance']))
+        
 
 if __name__ == "__main__":
     main()
