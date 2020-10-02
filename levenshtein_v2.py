@@ -31,7 +31,7 @@ def levenshtein_distance2(words: Iterator[str], vocabulary: Dict[str, int]):
         for i in idx:
             suggestions.append(vocab_list[i])
 
-            output("{misspelled}\t{corrections}".format(
-                misspelled=word,
-                corrections="\t".join(suggestions)
-            ))  # may cause IO bottleneck
+        output("{misspelled}\t{corrections}".format(
+            misspelled=word,
+            corrections="\t".join(suggestions)
+        ))  # may cause IO bottleneck
