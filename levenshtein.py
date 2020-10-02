@@ -19,7 +19,7 @@ def levenshtein_distance(words: Iterator[str], vocabulary: str):
 
     for word in words:
         suggestions = sorted(spell.candidates(
-            word), key=spell.word_probability)
+            word), key=spell.word_probability, reverse=True)
 
         output("{misspelled}\t{corrections}".format(
             misspelled=word,
