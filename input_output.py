@@ -4,9 +4,9 @@ Handles the io of the correction program
 import argparse
 from argparse import Namespace
 from sys import stdin
-from typing import Dict, Iterator, Optional
+from typing import Dict, Iterator
 
-parsed_args: Optional[Namespace] = None
+parsed_args: Namespace 
 
 def get_args() -> Dict[str, str]:
     """Gathers command line arguments and prepares output file if needed
