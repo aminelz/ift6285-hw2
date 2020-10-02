@@ -4,7 +4,7 @@ from input_output import output
 from Levenshtein import jaro_winkler
 import numpy as np
 
-def levenshtein_distance(words: Iterator[str], vocabulary: str):
+def jarowinkler_distance(words: Iterator[str], vocabulary: str):
     """Corrects the words based on JaroWinkler distances
 
     Args:
