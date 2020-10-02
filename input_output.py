@@ -90,7 +90,7 @@ def get_args() -> Dict[str, str]:
     args = parser.parse_args()
 
     arg_dict = {"vocabulary": args.vocabulary, "input_file": args.input_file,
-                "distance": args.distance if args.distance is not None else "levenshtein"}
+                "distance": args.distance if args.distance is not None else "levenshtein2"}
 
     # output file is emptied
     if args.output_file is not None:
