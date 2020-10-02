@@ -11,7 +11,6 @@ def jarowinkler_distance(words: Iterator[str], vocabulary: str):
         words (Iterator[str]): Iterator over the misspelled words
         vocabulary (str) : dictionary holding words and their frequency
     """
-    suggestions = []
 
     for word in words:
         distances = []
@@ -30,7 +29,7 @@ def jarowinkler_distance(words: Iterator[str], vocabulary: str):
                         idx[j] = temp   
 
         for i in idx:
-            suggestions.append()
+            suggestions.append(vocabulary[i])
 
             output("{misspelled}\t{corrections}".format(
                 misspelled=word,

@@ -11,7 +11,6 @@ def hamming_distance(words: Iterator[str], vocabulary: Dict[str, int]):
         words (Iterator[str]): Iterator over the misspelled words
         vocabulary (Dict[str,int]) : dictionary holding words and their frequency
     """
-    suggestions = []
 
     for word in words:
         distances = []
@@ -30,7 +29,7 @@ def hamming_distance(words: Iterator[str], vocabulary: Dict[str, int]):
                         idx[j] = temp   
 
         for i in idx:
-            suggestions.append()
+            suggestions.append(vocabulary[i])
 
             output("{misspelled}\t{corrections}".format(
                 misspelled=word,
