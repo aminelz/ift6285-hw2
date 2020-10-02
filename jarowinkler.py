@@ -16,7 +16,7 @@ def jarowinkler_distance(words: Iterator[str], vocabulary: str):
         distances = []
         suggestions = []
         vocab_list = list(vocabulary)
-        for (i,vocab) in vocab_list:
+        for (i,vocab) in enumerate(vocab_list):
             distances.append(jaro_winkler(word, vocab))
         idx = np.array(distances).argsort()[::-1][:5]
         
